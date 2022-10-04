@@ -200,8 +200,8 @@ assign BUTTONS = 0;
 wire [15:0] sound;
 
 assign AUDIO_S = 0;
-assign AUDIO_L = sound;
-assign AUDIO_R = sound;
+assign AUDIO_L = sound[15:3];
+assign AUDIO_R = sound[15:3];
 assign AUDIO_MIX = 2'd3;
 
 ////////////

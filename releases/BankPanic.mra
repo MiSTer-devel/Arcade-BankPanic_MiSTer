@@ -28,13 +28,13 @@
 
 	<switches default="fc">
 
-		<dip bits="0,1" name="Coin Switch1" ids="3C/1C,1C/2C,2C/1C,1C/1C"/>
-		<dip bits="2" name="Coin Switch2" ids="2C/1C,1C/1C"/>
-		<dip bits="3" name="Lives" ids="4,3"/>
-		<dip bits="4" name="Bonus Life" ids="100K 400K 800K,70K 200K 500K"/>
-		<dip bits="5" name="Difficulty" ids="Hard,Easy"/>
-		<dip bits="6" name="Demo Sounds" ids="On,Off"/>
-		<dip bits="7" name="Cabinet" ids="Upright,Cocktail"/>
+		<dip bits="0,1" name="Coin Switch1" ids="1C/1C,1C/2C,2C/1C,3C/1C"/>
+		<dip bits="2" name="Coin Switch2" ids="1C/1C,2C/1C"/>
+		<dip bits="3" name="Lives" ids="3,4"/>
+		<dip bits="4" name="Bonus Life" ids="70K 200K 500K,100K 400K 800K"/>
+		<dip bits="5" name="Difficulty" ids="Easy,Hard"/>
+		<dip bits="6" name="Demo Sounds" ids="Off,On"/>
+		<dip bits="7" name="Cabinet" ids="Cocktail,Upright"/>
 
 	</switches>
 

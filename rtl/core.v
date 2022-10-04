@@ -143,7 +143,7 @@ always @(posedge clk_en_514)
   h0 <= ~h0;
 
 assign hcount[0] = h0;
-assign hb = ~hcount[8];
+assign hb = hcount[8:0] >= 192 && hcount[8:0] <= 256 + 32;
 
 x74161 u1G(
   .cl_n ( 1'b1        ),
@@ -168,9 +168,11 @@ x74161 u1H(
 );
 
 // 1C
-always @(posedge clk_en_514) begin
-  if (hcount[2] & ~hcount[8]) hs <= 1'b0;
-  if (|hcount[5:4]) hs <= 1'b1;
+always @(posedge clk_sys) begin
+  if (~oldh2 & hcount[2]) begin
+    if (hcount[8]) hs <= 1'b0;
+    else hs <= ~|hcount[5:4];
+  end
 end
 
 reg phs, v0;
