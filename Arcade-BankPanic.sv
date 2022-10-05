@@ -331,7 +331,7 @@ wire kw       = joy0[11];
 wire p2_push1 = joy1[4];
 wire p2_push2 = joy1[5];
 wire p2_push3 = joy1[6];
-wire p2_sel   = joy0[7];
+wire p2_sel   = joy1[7];
 
 wire p2_left  = joy1[1];
 wire p2_right = joy1[0];
@@ -339,7 +339,7 @@ wire p1_left  = joy0[1];
 wire p1_right = joy0[0];
 
 wire [7:0] p1 = { p1_push2, ssw, coin1, p1_push1, p1_left, 1'b0, p1_right, 1'b0 };
-wire [7:0] p2 = { p2_push2, p1_sel, p2_sel, p2_push1, p2_left, 1'b0, p2_right, 1'b0 };
+wire [7:0] p2 = { p2_push2, p2_sel, p1_sel, p2_push1, p2_left, 1'b0, p2_right, 1'b0 };
 wire [7:0] p3 = { 4'd0, kw, coin2, p2_push3, p1_push3 };
 
 core u_core(
