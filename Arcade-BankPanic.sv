@@ -200,8 +200,8 @@ assign BUTTONS = 0;
 wire [15:0] sound;
 
 assign AUDIO_S = 0;
-assign AUDIO_L = sound[15:3];
-assign AUDIO_R = sound[15:3];
+assign AUDIO_L = sound[15:1];
+assign AUDIO_R = sound[15:1];
 assign AUDIO_MIX = 2'd3;
 
 ////////////
@@ -219,7 +219,6 @@ localparam CONF_STR = {
   "O[122:121],Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",
   "O[2],TV Mode,NTSC,PAL;",
   "O[4:3],Noise,White,Red,Green,Blue;",
-  "-;",
   "-;",
   "DIP;",
   "-;",
@@ -340,7 +339,7 @@ wire p1_left  = joy0[1];
 wire p1_right = joy0[0];
 
 wire [7:0] p1 = { p1_push2, ssw, coin1, p1_push1, p1_left, 1'b0, p1_right, 1'b0 };
-wire [7:0] p2 = { p2_push2, p2_sel, p1_sel, p2_push1, p2_left, 1'b0, p2_right, 1'b0 };
+wire [7:0] p2 = { p2_push2, p1_sel, p2_sel, p2_push1, p2_left, 1'b0, p2_right, 1'b0 };
 wire [7:0] p3 = { 4'd0, kw, coin2, p2_push3, p1_push3 };
 
 core u_core(

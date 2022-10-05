@@ -44,7 +44,7 @@ wire [7:0]  fg_color_addr = ioctl_download ? ioctl_addr - 27'h20020 : rc_addr;
 wire        fg_color_wren = ioctl_download && ioctl_addr >= 27'h20020 && ioctl_addr < 27'h20120 ? ioctl_wr : 1'b0;
 wire [7:0]  bg_color_addr = ioctl_download ? ioctl_addr - 27'h20120 : sc_addr;
 wire        bg_color_wren = ioctl_download && ioctl_addr >= 27'h20120 && ioctl_addr < 27'h20220 ? ioctl_wr : 1'b0;
-wire [3:0]  pal_addr      = ioctl_download ? ioctl_addr - 27'h20000 : col;
+wire [4:0]  pal_addr      = ioctl_download ? ioctl_addr - 27'h20000 : { back, col };
 wire        pal_wren      = ioctl_download && ioctl_addr >= 27'h20000 && ioctl_addr < 27'h20020 ? ioctl_wr : 1'b0;
 
 wire [7:0]  gfx_rom_data     = ioctl_dout;
@@ -69,7 +69,7 @@ wire        gfx_rom8_wren_a  = ioctl_download && ioctl_addr >= 27'h1e000 && ioct
 
 reg [7:0] color;
 always @(posedge clk_sys)
-  if (clk_en_514) color <= pal_data;
+  if (clk_en_514) color <= u8H[2] ? pal_data : 8'd0;
 
 assign ce_pix = clk_en_514;
 assign { blue, green, red } = color;
@@ -143,7 +143,7 @@ always @(posedge clk_en_514)
   h0 <= ~h0;
 
 assign hcount[0] = h0;
-assign hb = hcount[8:0] >= 192 && hcount[8:0] <= 256 + 32;
+assign hb = hcount[8:0] > 192 && hcount[8:0] <= 256 + 32;
 
 x74161 u1G(
   .cl_n ( 1'b1        ),
@@ -639,7 +639,7 @@ dpram #(8,4) bg_color_lut(
 wire back = u8H[3];
 dpram #(5,8) palette(
   .clock     ( clk_sys  ),
-  .address_a ( { back, pal_addr } ),
+  .address_a ( pal_addr ),
   .data_a    ( col_data ),
   .q_a       ( pal_data ),
   .rden_a    ( 1'b1     ),
