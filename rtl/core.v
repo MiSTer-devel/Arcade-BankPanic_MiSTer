@@ -22,6 +22,7 @@ module core(
   output       vs,
   output reg   hs,
   output       ce_pix,
+  input  [4:0] hoffs,
 
   output [15:0] sound
 
@@ -168,10 +169,11 @@ x74161 u1H(
 );
 
 // 1C
+wire [8:0] hc2 = hcount - hoffs;
 always @(posedge clk_sys) begin
-  if (~oldh2 & hcount[2]) begin
-    if (hcount[8]) hs <= 1'b0;
-    else hs <= ~|hcount[5:4];
+  if (~oldh2 & hc2[2]) begin
+    if (hc2[8]) hs <= 1'b0;
+    else hs <= ~|hc2[5:4];
   end
 end
 

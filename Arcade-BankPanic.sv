@@ -222,12 +222,16 @@ localparam CONF_STR = {
   "-;",
   "DIP;",
   "-;",
+  "-;",
+  "OOS,Analog Video H-Pos,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31;",
   "J1,Fire1,Fire2,Fire3,P1,Coin1,Coin2,Service,KW;",
   "Jn,Fire1,Fire2,Fire3,P2;",
   "T[0],Reset;",
   "R[0],Reset and close OSD;",
   "V,v",`BUILD_DATE
 };
+
+wire [4:0] hoffs = status[28:24];
 
 wire         direct_video;
 wire         forced_scandoubler;
@@ -362,7 +366,8 @@ core u_core(
   .hs             ( HSync            ),
   .hb             ( HBlank           ),
   .ce_pix         ( ce_pix           ),
-  .sound          ( sound            )
+  .sound          ( sound            ),
+  .hoffs          ( hoffs            )
 );
 
 reg  [26:0] act_cnt;
