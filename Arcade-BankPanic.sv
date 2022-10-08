@@ -178,7 +178,7 @@ assign USER_OUT = '1;
 assign {UART_RTS, UART_TXD, UART_DTR} = 0;
 assign {SD_SCK, SD_MOSI, SD_CS} = 'Z;
 assign {SDRAM_DQ, SDRAM_A, SDRAM_BA, SDRAM_CLK, SDRAM_CKE, SDRAM_DQML, SDRAM_DQMH, SDRAM_nWE, SDRAM_nCAS, SDRAM_nRAS, SDRAM_nCS} = 'Z;
-assign {DDRAM_CLK, DDRAM_BURSTCNT, DDRAM_ADDR, DDRAM_DIN, DDRAM_BE, DDRAM_RD, DDRAM_WE} = '0;
+// assign {DDRAM_CLK, DDRAM_BURSTCNT, DDRAM_ADDR, DDRAM_DIN, DDRAM_BE, DDRAM_RD, DDRAM_WE} = '0;
 
 //assign VGA_SL = 0;
 assign VGA_F1 = 0;
@@ -219,6 +219,7 @@ localparam CONF_STR = {
   "O[122:121],Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",
   "O[2],TV Mode,NTSC,PAL;",
   "O[4:3],Noise,White,Red,Green,Blue;",
+  "O[5],Orientation,Vertical,Horizontal;",
   "-;",
   "DIP;",
   "-;",
@@ -291,6 +292,10 @@ pll pll
 wire reset = RESET | status[0] | buttons[1];
 
 //////////////////////////////////////////////////////////////////
+reg [7:0] title = 0;
+always @(posedge clk_sys) begin
+    if (ioctl_wr & (ioctl_index==1)) title <= ioctl_dout;
+end
 
 reg [7:0] sw[8];
 always @(posedge clk_sys)
@@ -301,7 +306,15 @@ wire core_download = ioctl_download && (ioctl_index==0);
 wire [2:0] vred, vgreen;
 wire [1:0] vblue;
 
+wire no_rotate = status[5] | direct_video;
 wire [2:0] fx = status[17:15];
+
+wire flip_screen = status[8];
+wire rotate_ccw = flip_screen;
+wire video_rotated;
+wire flip = 0;
+
+screen_rotate screen_rotate (.*);
 
 arcade_video #(224,8,0) arcade_video(
   .*,
@@ -337,13 +350,18 @@ wire p2_push2 = joy1[5];
 wire p2_push3 = joy1[6];
 wire p2_sel   = joy1[7];
 
+wire p2_up    = joy1[3];
+wire p2_down  = joy1[2];
 wire p2_left  = joy1[1];
 wire p2_right = joy1[0];
+
+wire p1_up    = joy0[3];
+wire p1_down  = joy0[2];
 wire p1_left  = joy0[1];
 wire p1_right = joy0[0];
 
-wire [7:0] p1 = { p1_push2, ssw, coin1, p1_push1, p1_left, 1'b0, p1_right, 1'b0 };
-wire [7:0] p2 = { p2_push2, p2_sel, p1_sel, p2_push1, p2_left, 1'b0, p2_right, 1'b0 };
+wire [7:0] p1 = { p1_push2, ssw,    coin1,  p1_push1, title[0] ? {1'b0, p1_down, 1'b0, p1_up} : {p1_left, 1'b0, p1_right, 1'b0} };
+wire [7:0] p2 = { p2_push2, p2_sel, p1_sel, p2_push1, title[0] ? {1'b0, p2_down, 1'b0, p2_up} : {p2_left, 1'b0, p2_right, 1'b0} };
 wire [7:0] p3 = { 4'd0, kw, coin2, p2_push3, p1_push3 };
 
 core u_core(
