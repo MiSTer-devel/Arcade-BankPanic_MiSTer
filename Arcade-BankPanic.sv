@@ -185,6 +185,7 @@ assign VGA_F1 = 0;
 assign VGA_SCALER  = 0;
 assign VGA_DISABLE = 0;
 assign HDMI_FREEZE = 0;
+assign FB_FORCE_BLANK = 0;
 
 //assign AUDIO_S = 0;
 //assign AUDIO_L = 0;
