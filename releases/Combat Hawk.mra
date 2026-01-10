@@ -9,12 +9,12 @@
     <mameversion>0247</mameversion>
     <rbf>bankpanic</rbf>
     <resolution>15kHz</resolution>
-    <rotation>horizontal</rotation>
+    <rotation>vertical (ccw)</rotation>
     <players>2</players>
     <joystick>2-way</joystick>
     <num_buttons>3</num_buttons>
     <buttons names="Fire1,Fire2,Fire3,P1,Coin1,Coin2,Service,KW" default="Y,B,A,Start,R1,L1,R2,L2"></buttons>
-    <switches default="f7">
+    <switches default="f6">
         <dip bits="0" name="Flip Screen" ids="Off,On" />
         <dip bits="1,2" name="Coinage" ids="1C/1C,1C/2C,1C/3C,2C/1C" />
         <dip bits="3" name="Lives" ids="3,4" />
